@@ -3,7 +3,10 @@ import path from 'path';
 
 const sequelize = new Sequelize('slack', 'postgres', 'postgres', {
   dialect: 'postgres',
-  host: 'jhydb1.cgiopeghcwn4.us-east-2.rds.amazonaws.com'
+  host: 'jhydb1.cgiopeghcwn4.us-east-2.rds.amazonaws.com',
+  define: {
+    underscored: true
+  }
 });
 
 const models = {
