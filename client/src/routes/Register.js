@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Message, Container, Header, Input, Button } from "semantic-ui-react";
+import { Message, Container, Header, Input, Button, Form } from "semantic-ui-react";
 import { graphql } from "react-apollo";
 import gql from 'graphql-tag';
 
@@ -67,11 +67,38 @@ class Register extends Component {
         return (
             <Container text>
                 <Header as='h2'>Header</Header>
-                <Input error={!!usernameError} fluid placeholder='Username' name="username" value={username} onChange={this.inputChange} />
-                <Input error={!!emailError} fluid placeholder='Email' name="email" value={email} onChange={this.inputChange} />
-                <Input error={!!passwordError} fluid type="password" placeholder='Password' name="password" value={password} onChange={this.inputChange} />
-                <Button onClick={this.onSubmit}>Submit</Button>
-                {(usernameError || emailError || passwordError) ? <Message
+                <Form>
+                    <Form.Field error={!!usernameError}>
+                        <Input 
+                            fluid 
+                            placeholder='Username' 
+                            name="username" 
+                            value={username} 
+                            onChange={this.inputChange} 
+                        />
+                    </Form.Field>
+                    <Form.Field error={!!emailError} >
+                        <Input 
+                            fluid 
+                            placeholder='Email' 
+                            name="email" 
+                            value={email} 
+                            onChange={this.inputChange} 
+                        />
+                    </Form.Field>
+                    <Form.Field error={!!passwordError} >
+                        <Input 
+                            fluid 
+                            type="password" 
+                            placeholder='Password' 
+                            name="password" 
+                            value={password} 
+                            onChange={this.inputChange} 
+                        />
+                    </Form.Field>
+                    <Button onClick={this.onSubmit}>Submit</Button>
+                </Form>
+                {(errorList.length) ? <Message
                     error
                     header='There was some errors with your submission'
                     list={errorList}

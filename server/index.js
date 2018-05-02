@@ -8,6 +8,9 @@ import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas";
 
 import models from './models';
 
+const SECRET = 'accaslkjksk';
+const SECRET2 = 'wjdgksdud123';
+
 const typeDefs = mergeTypes(fileLoader(path.join(__dirname, './schema')));
 
 const resolvers = mergeResolvers(fileLoader(path.join(__dirname, './resolvers')));
@@ -28,7 +31,9 @@ app.use(graphqlEndPoint, bodyParser.json(), graphqlExpress({ schema, context: {
     models,
     user: {
         id: 1
-    }
+    },
+    SECRET,
+    SECRET2
 } }));
 
 app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndPoint }));
