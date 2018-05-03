@@ -66,7 +66,7 @@ class Register extends Component {
         }
         return (
             <Container text>
-                <Header as='h2'>Header</Header>
+                <Header as='h2'>Register</Header>
                 <Form>
                     <Form.Field error={!!usernameError}>
                         <Input 
