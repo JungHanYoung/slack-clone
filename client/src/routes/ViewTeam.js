@@ -6,9 +6,9 @@ import Messages from '../components/Messages';
 import SendMessage from '../components/SendMessage';
 import AppLayout from '../components/AppLayout';
 
-export default () => (
+export default ({ match: { params } }) => (
       <AppLayout>
-            <SideBar currentTeamId={7}/>
+            <SideBar currentTeamId={params.teamId}/>
             <Header
             channelName="general"
             />
