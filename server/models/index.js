@@ -6,7 +6,8 @@ const sequelize = new Sequelize('slack', 'postgres', 'postgres', {
   host: 'jhydb1.cgiopeghcwn4.us-east-2.rds.amazonaws.com',
   define: {
     underscored: true
-  }
+  },
+  operatorsAliases: Sequelize.Op
 });
 
 const models = {
