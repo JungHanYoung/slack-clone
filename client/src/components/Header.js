@@ -1,7 +1,14 @@
+import React from 'react';
 import styled from 'styled-components';
+import { Header } from "semantic-ui-react";
 
-export default styled.div`
-      grid-column: 1;
+const HeaderWrapper =  styled.div`
+      grid-column: 3;
       grid-row: 1 / 4;
-      background-color: #362234;
 `;
+
+export default ({channelName}) => (
+      <HeaderWrapper>
+            <Header as="h1" textAlign="center">#{channelName}</Header>
+      </HeaderWrapper>
+)
