@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Container, Header, Input, Button, Form, Message } from "semantic-ui-react";
 import { graphql } from "react-apollo";
-import gql from 'graphql-tag';
+
+import { loginMutation } from "../graphql/user";
 
 class Login extends Component {
     state = {
@@ -85,19 +86,5 @@ class Login extends Component {
         );
     }
 }
-
-const loginMutation = gql`
-    mutation($email: String!, $password: String!) {
-        login(email: $email, password: $password) {
-            ok
-            token
-            refreshToken
-            errors{
-                path
-                message
-            }
-        }
-    }
-`;
 
 export default graphql(loginMutation)(Login);

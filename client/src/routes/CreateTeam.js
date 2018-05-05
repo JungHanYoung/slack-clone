@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Header, Input, Button, Form, Message } from "semantic-ui-react";
 import { graphql } from "react-apollo";
-import gql from 'graphql-tag';
+
+// GraphQL
+import { createTeamMutation } from "../graphql/team";
 
 class CreateTeam extends Component {
     state = {
@@ -78,20 +80,5 @@ class CreateTeam extends Component {
         );
     }
 }
-
-const createTeamMutation = gql`
-    mutation($name: String!) {
-        createTeam(name: $name) {
-            ok
-            team{
-                id
-            }
-            errors{
-            path
-            message
-            }
-        }
-    }
-`;
 
 export default graphql(createTeamMutation)(CreateTeam);

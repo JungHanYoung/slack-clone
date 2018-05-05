@@ -1,8 +1,12 @@
 import React from 'react';
 import { Modal, Button, Input, Form } from "semantic-ui-react";
 import { withFormik } from "formik";
-import gql from 'graphql-tag';
 import { compose, graphql } from "react-apollo";
+import { findIndex } from "lodash";
+
+// GraphQL
+import { createChannelMutation } from "../graphql/channel";
+import { allTeamsQuery } from "../graphql/team";
 
 const AddChannelModal = ({ 
     open,
@@ -35,19 +39,39 @@ const AddChannelModal = ({
     </Modal>
 );
 
-const createChannelMutation = gql`
-    mutation($teamId: Int!, $name: String!){
-        createChannel(teamId: $teamId, name: $name)
-    }
-`
-
 export default compose(
     graphql(createChannelMutation),
     withFormik({
-    mapPropsToValues: () => ({ name: ''}),
-    handleSubmit: async (values, { props: { onClose, teamId, mutate}, setSubmitting }) => {
-        await mutate({variables: {teamId, name: values.name}});
-        onClose();
-        setSubmitting(false);
-    },
-}))(AddChannelModal);
+        mapPropsToValues: () => ({ name: ''}),
+        handleSubmit: async (values, { props: { onClose, teamId, mutate}, setSubmitting }) => {
+            await mutate({
+                variables: {teamId, name: values.name},
+                optimisticResponse: {
+                    createChannel: {
+                        __typename: 'Mutation',
+                        ok: true,
+                        channel: {
+                            __typename: 'Channel',
+                            id: -1,
+                            name: values.name,
+                        },
+                    },
+                },
+                update: (store, { data: { createChannel } }) => {
+                    const { ok, channel } = createChannel;
+                    if(!ok) {
+                        return;
+                    }
+                    const data = store.readQuery({ query: allTeamsQuery });
+                    console.log('data:', data);
+                    const teamIdx = findIndex(data.allTeams, ['id', parseInt(teamId, 10)]);
+                    console.log(teamIdx);
+                    data.allTeams[teamIdx].channels.push(channel);
+                    store.writeQuery({ query: allTeamsQuery, data });
+                },
+            });
+            onClose();
+            setSubmitting(false);
+        },
+    })
+)(AddChannelModal);
